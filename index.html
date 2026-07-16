@@ -81,6 +81,7 @@
         <p class="tagline" id="tagline"></p>
         <div class="meta">
           <div class="metarow"><span class="mlabel" id="ind-label"></span><span class="chips" id="industries"></span></div>
+          <div class="metarow"><span class="mlabel" id="exp-label"></span><span class="chips" id="expertise"></span></div>
           <div class="metarow"><span class="mlabel" id="edu-label"></span><span class="edu" id="education"></span></div>
         </div>
       </div>
@@ -124,6 +125,7 @@
       source: { sv: 'Källkod', en: 'Source', de: 'Quellcode', fr: 'Code source', uk: 'Джерело' },
       viewprs: { sv: 'Visa PR:er', en: 'View PRs', de: 'PRs ansehen', fr: 'Voir les PR', uk: 'Переглянути PR' },
       indLabel: { sv: 'Branscher', en: 'Industries', de: 'Branchen', fr: 'Secteurs', uk: 'Галузі' },
+      expLabel: { sv: 'Expertis', en: 'Expertise', de: 'Expertise', fr: 'Expertise', uk: 'Експертиза' },
       eduLabel: { sv: 'Utbildning', en: 'Education', de: 'Ausbildung', fr: 'Formation', uk: 'Освіта' },
       foot: {
         sv: '· Byggd som en statisk sida på GitHub Pages.',
@@ -306,8 +308,11 @@
 
     const INDUSTRIES = [
       { sv: 'Finans', en: 'Finance', de: 'Finanzwesen', fr: 'Finance', uk: 'Фінанси' },
-      { sv: 'Telekom', en: 'Telecoms', de: 'Telekommunikation', fr: 'Télécoms', uk: 'Телеком' },
-      { sv: 'Energi', en: 'Energy', de: 'Energie', fr: 'Énergie', uk: 'Енергетика' }
+      { sv: 'Telekom', en: 'Telecoms', de: 'Telekommunikation', fr: 'Télécoms', uk: 'Телеком' }
+    ]
+    const EXPERTISE = [
+      { sv: 'Business intelligence', en: 'Business intelligence', de: 'Business Intelligence', fr: 'Business intelligence', uk: 'Бізнес-аналітика (BI)' },
+      { sv: 'Data engineering', en: 'Data engineering', de: 'Data Engineering', fr: 'Data engineering', uk: 'Інженерія даних' }
     ]
     const EDU = [
       { sv: 'Kandidatexamen i systemvetenskap', en: 'BSc in Systems Analysis', de: 'B.Sc. in Systemanalyse', fr: 'Licence en analyse de systèmes', uk: 'Бакалавр із системного аналізу' },
@@ -346,9 +351,12 @@
       document.documentElement.lang = lang
       $('tagline').textContent = UI.tagline[lang]
       $('ind-label').textContent = UI.indLabel[lang]
+      $('exp-label').textContent = UI.expLabel[lang]
       $('edu-label').textContent = UI.eduLabel[lang]
-      const ind = $('industries'); ind.innerHTML = ''
-      INDUSTRIES.forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x[lang]; ind.appendChild(s) })
+      const chipRow = (host, items) => { const el = $(host); el.innerHTML = ''
+        items.forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x[lang]; el.appendChild(s) }) }
+      chipRow('industries', INDUSTRIES)
+      chipRow('expertise', EXPERTISE)
       $('education').textContent = EDU.map(x => x[lang]).join(' · ')
       $('h-demos').textContent = UI.demos[lang]
       $('h-repos').textContent = UI.repos[lang]
