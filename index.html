@@ -30,6 +30,12 @@
     .id { flex: 1 1 320px; min-width: 0; }
     h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 6px; letter-spacing: -.02em; }
     .tagline { color: var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin: 0; max-width: 42ch; }
+    .meta { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .metarow { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+    .mlabel { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+              font-weight: 700; flex: 0 0 78px; }
+    .chips { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+    .edu { color: var(--ink); font-size: 14.5px; }
     .langs { display: flex; gap: 2px; flex-wrap: wrap; }
     .langs button {
       font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .02em;
@@ -73,6 +79,10 @@
       <div class="id">
         <h1>Örjan Lundberg</h1>
         <p class="tagline" id="tagline"></p>
+        <div class="meta">
+          <div class="metarow"><span class="mlabel" id="ind-label"></span><span class="chips" id="industries"></span></div>
+          <div class="metarow"><span class="mlabel" id="edu-label"></span><span class="edu" id="education"></span></div>
+        </div>
       </div>
       <div class="langs" id="langs" role="group" aria-label="Language"></div>
     </header>
@@ -113,6 +123,8 @@
       open: { sv: 'Öppna', en: 'Open', de: 'Öffnen', fr: 'Ouvrir', uk: 'Відкрити' },
       source: { sv: 'Källkod', en: 'Source', de: 'Quellcode', fr: 'Code source', uk: 'Джерело' },
       viewprs: { sv: 'Visa PR:er', en: 'View PRs', de: 'PRs ansehen', fr: 'Voir les PR', uk: 'Переглянути PR' },
+      indLabel: { sv: 'Branscher', en: 'Industries', de: 'Branchen', fr: 'Secteurs', uk: 'Галузі' },
+      eduLabel: { sv: 'Utbildning', en: 'Education', de: 'Ausbildung', fr: 'Formation', uk: 'Освіта' },
       foot: {
         sv: '· Byggd som en statisk sida på GitHub Pages.',
         en: '· Built as a static page on GitHub Pages.',
@@ -202,16 +214,79 @@
         de: 'Circuit Breaker für Scala, basierend auf dem Buch „Release It“.',
         fr: 'Circuit Breaker pour Scala, d’après le livre « Release It ».',
         uk: 'Circuit Breaker для Scala, за книгою «Release It».'
+      } },
+      { name: 'Deppis', repo: 'https://github.com/oluies/Deppis', d: {
+        sv: 'Metadataprivat meddelandeapp — Signal-lik E2E-kryptering plus täcktrafik och oblivious store-and-notify-backend.',
+        en: 'Metadata-private messenger — Signal-style E2E encryption plus cover traffic and an oblivious store-and-notify backend.',
+        de: 'Metadaten-privater Messenger — Signal-artige E2E-Verschlüsselung plus Cover-Traffic und Oblivious-Store-and-Notify-Backend.',
+        fr: 'Messagerie sans métadonnées — chiffrement E2E façon Signal, trafic de couverture et backend « oblivious store-and-notify ».',
+        uk: 'Месенджер із приватними метаданими — E2E-шифрування в стилі Signal, cover-трафік і oblivious store-and-notify бекенд.'
+      } },
+      { name: 'P4R-Type', repo: 'https://github.com/oluies/P4R-Type', d: {
+        sv: 'Typad P4-styrplansbindning för Scala 3 — uppgraderad OOPSLA-artefakt (JDK 25).',
+        en: 'Typed P4 control-plane binding library for Scala 3 — upgraded OOPSLA artifact (JDK 25).',
+        de: 'Typisierte P4-Control-Plane-Bindung für Scala 3 — aktualisiertes OOPSLA-Artefakt (JDK 25).',
+        fr: 'Bibliothèque de liaison typée pour le plan de contrôle P4 en Scala 3 — artefact OOPSLA modernisé (JDK 25).',
+        uk: 'Типізована бібліотека прив’язки control-plane P4 для Scala 3 — оновлений артефакт OOPSLA (JDK 25).'
+      } },
+      { name: 'dbtex007', repo: 'https://github.com/oluies/dbtex007', d: {
+        sv: 'dbt mot SQL Server — Python-modeller jämfört med DuckDB:s mssql-tillägg, med härdad CI-matris.',
+        en: 'dbt on SQL Server — Python models vs. the DuckDB mssql extension, with a hardened CI matrix.',
+        de: 'dbt auf SQL Server — Python-Modelle vs. DuckDB-mssql-Erweiterung, mit gehärteter CI-Matrix.',
+        fr: 'dbt sur SQL Server — modèles Python vs. l’extension mssql de DuckDB, avec matrice CI durcie.',
+        uk: 'dbt на SQL Server — Python-моделі проти mssql-розширення DuckDB, із загартованою CI-матрицею.'
+      } },
+      { name: 'dbt-duckdb-trading-calendar', repo: 'https://github.com/oluies/dbt-duckdb-trading-calendar', d: {
+        sv: 'dbt- och DuckDB-paket som bygger en börshandelskalender; CI mot SQL Server 2022.',
+        en: 'dbt + DuckDB package that builds an exchange trading calendar; CI against SQL Server 2022.',
+        de: 'dbt- und DuckDB-Paket, das einen Börsen-Handelskalender erzeugt; CI gegen SQL Server 2022.',
+        fr: 'Package dbt + DuckDB générant un calendrier de bourse ; CI contre SQL Server 2022.',
+        uk: 'Пакет dbt + DuckDB, що будує біржовий торговий календар; CI проти SQL Server 2022.'
+      } },
+      { name: 'ddd-sample-scala', repo: 'https://github.com/oluies/ddd-sample-scala', d: {
+        sv: 'Scala-implementation av det klassiska DDD-exemplet med fraktlogistik (Evans/Domain-Driven Design).',
+        en: 'Scala implementation of the classic DDD cargo-shipping sample (Evans/Domain-Driven Design).',
+        de: 'Scala-Implementierung des klassischen DDD-Fracht-Beispiels (Evans/Domain-Driven Design).',
+        fr: 'Implémentation Scala de l’exemple classique DDD de fret maritime (Evans/Domain-Driven Design).',
+        uk: 'Реалізація на Scala класичного DDD-прикладу з вантажоперевезеннями (Evans/Domain-Driven Design).'
+      } },
+      { name: 'rvsnoop', repo: 'https://github.com/oluies/rvsnoop', d: {
+        sv: 'Övervakningsverktyg för TIBCO Rendezvous-meddelanden (ursprunglig upphovsperson).',
+        en: 'TIBCO Rendezvous message-monitoring tool (original author).',
+        de: 'Monitoring-Tool für TIBCO-Rendezvous-Nachrichten (ursprünglicher Autor).',
+        fr: 'Outil de surveillance des messages TIBCO Rendezvous (auteur d’origine).',
+        uk: 'Інструмент моніторингу повідомлень TIBCO Rendezvous (першоавтор).'
+      } },
+      { name: 'ScalaLand', repo: 'https://github.com/oluies/ScalaLand', d: {
+        sv: 'Exempel på rollspelsapplikation i Scala.',
+        en: 'Example Scala role-playing application.',
+        de: 'Beispiel für eine Rollenspiel-Anwendung in Scala.',
+        fr: 'Exemple d’application de jeu de rôle en Scala.',
+        uk: 'Приклад рольового застосунку на Scala.'
       } }
     ]
 
     const CONTRIBS = [
+      { name: 'open-metadata/OpenMetadata', url: 'https://github.com/open-metadata/OpenMetadata/pulls?q=is%3Apr+author%3Aoluies', d: {
+        sv: 'Öppen plattform för datakatalog och metadata — committer, bidrag i flera PR:er.',
+        en: 'Open data-catalog & metadata platform — committer, contributions across several PRs.',
+        de: 'Offene Plattform für Datenkatalog und Metadaten — Committer, Beiträge in mehreren PRs.',
+        fr: 'Plateforme ouverte de catalogue et de métadonnées — committer, contributions sur plusieurs PR.',
+        uk: 'Відкрита платформа каталогу даних і метаданих — committer, внесок у кількох PR.'
+      } },
       { name: 'gnuradio/gnuradio', url: 'https://github.com/gnuradio/gnuradio/pulls?q=is%3Apr+author%3Aoluies', d: {
         sv: 'Ekosystem för mjukvaruradio — PR: fix av Python sync_block-segfault vid top_block-start, med regressionstest.',
         en: 'Free software-radio ecosystem — PR: fix a Python sync_block segfault at top_block start, with a regression test.',
         de: 'Ökosystem für Software Defined Radio — PR: Fix eines Python-sync_block-Segfaults beim top_block-Start, mit Regressionstest.',
         fr: 'Écosystème de radio logicielle libre — PR : correction d’un segfault Python sync_block au démarrage de top_block, avec test de régression.',
         uk: 'Екосистема програмного радіо — PR: виправлення segfault Python sync_block під час запуску top_block, із регресійним тестом.'
+      } },
+      { name: 'awesome-spark/awesome-spark', url: 'https://github.com/awesome-spark/awesome-spark/pulls?q=is%3Apr+author%3Aoluies', d: {
+        sv: 'Kuraterad lista över Apache Spark-paket och resurser — mergade tillägg (Polynote, ModelDB, Optimus m.fl.).',
+        en: 'Curated list of Apache Spark packages & resources — merged additions (Polynote, ModelDB, Optimus, and more).',
+        de: 'Kuratierte Liste von Apache-Spark-Paketen und -Ressourcen — gemergte Ergänzungen (Polynote, ModelDB, Optimus u. a.).',
+        fr: 'Liste sélective de paquets et ressources Apache Spark — ajouts fusionnés (Polynote, ModelDB, Optimus, etc.).',
+        uk: 'Кураторський список пакетів і ресурсів Apache Spark — злиті доповнення (Polynote, ModelDB, Optimus та інші).'
       } },
       { name: 'rtk-ai/rtk', url: 'https://github.com/rtk-ai/rtk/pulls?q=is%3Apr+author%3Aoluies', d: {
         sv: 'CLI-proxy som optimerar LLM-tokens — PR:er: kontextvalidering, skydd mot prompt-injektion och regressionstest för proxyn.',
@@ -220,6 +295,16 @@
         fr: 'Proxy CLI optimisant les tokens LLM — PR : validation du contexte d’exécution, détection d’injection de prompt et test de régression du proxy.',
         uk: 'CLI-проксі для оптимізації токенів LLM — PR: валідація контексту виконання, виявлення ін’єкцій промптів і регресійний тест проксі.'
       } }
+    ]
+
+    const INDUSTRIES = [
+      { sv: 'Finans', en: 'Finance', de: 'Finanzwesen', fr: 'Finance', uk: 'Фінанси' },
+      { sv: 'Telekom', en: 'Telecoms', de: 'Telekommunikation', fr: 'Télécoms', uk: 'Телеком' },
+      { sv: 'Energi', en: 'Energy', de: 'Energie', fr: 'Énergie', uk: 'Енергетика' }
+    ]
+    const EDU = [
+      { sv: 'Kandidatexamen i systemvetenskap', en: 'BSc in Systems Analysis', de: 'B.Sc. in Systemanalyse', fr: 'Licence en analyse de systèmes', uk: 'Бакалавр із системного аналізу' },
+      { sv: 'Masterexamen i mjukvaruutveckling', en: 'MSc in Software Development', de: 'M.Sc. in Softwareentwicklung', fr: 'Master en développement logiciel', uk: 'Магістр із розробки ПЗ' }
     ]
 
     let lang = 'en'
@@ -253,6 +338,11 @@
     function render() {
       document.documentElement.lang = lang
       $('tagline').textContent = UI.tagline[lang]
+      $('ind-label').textContent = UI.indLabel[lang]
+      $('edu-label').textContent = UI.eduLabel[lang]
+      const ind = $('industries'); ind.innerHTML = ''
+      INDUSTRIES.forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x[lang]; ind.appendChild(s) })
+      $('education').textContent = EDU.map(x => x[lang]).join(' · ')
       $('h-demos').textContent = UI.demos[lang]
       $('h-repos').textContent = UI.repos[lang]
       $('h-contrib').textContent = UI.contrib[lang]
