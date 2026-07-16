@@ -29,6 +29,8 @@
     header { padding: 48px 0 8px; display: flex; flex-wrap: wrap; gap: 20px 24px; align-items: flex-start; }
     .id { flex: 1 1 320px; min-width: 0; }
     h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 6px; letter-spacing: -.02em; }
+    .pron { color: var(--muted); font-size: 13.5px; margin: 4px 0 8px; font-style: italic; }
+    .pron b { font-style: normal; font-weight: 600; color: var(--ink); }
     .tagline { color: var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin: 0; max-width: 42ch; }
     .meta { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
     .metarow { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
@@ -78,6 +80,7 @@
     <header>
       <div class="id">
         <h1>Örjan Lundberg</h1>
+        <p class="pron" id="pron" hidden></p>
         <p class="tagline" id="tagline"></p>
         <div class="meta">
           <div class="metarow"><span class="mlabel" id="ind-label"></span><span class="chips" id="industries"></span></div>
@@ -124,6 +127,13 @@
       open: { sv: 'Öppna', en: 'Open', de: 'Öffnen', fr: 'Ouvrir', uk: 'Відкрити' },
       source: { sv: 'Källkod', en: 'Source', de: 'Quellcode', fr: 'Code source', uk: 'Джерело' },
       viewprs: { sv: 'Visa PR:er', en: 'View PRs', de: 'PRs ansehen', fr: 'Voir les PR', uk: 'Переглянути PR' },
+      pron: {
+        sv: '',
+        en: 'Örjan is pronounced <b>“UR-yan”</b> (ö as in “bird”, j as “y”) · /ˈœːr.jan/',
+        de: 'Örjan spricht man <b>„ÖR-jan“</b> aus (j wie in „ja“) · /ˈœːr.jan/',
+        fr: 'Örjan se prononce <b>« EUR-yan »</b> (eu comme « peur », y comme « yeux ») · /ˈœːr.jan/',
+        uk: 'Örjan вимовляється <b>«Е́р-ян»</b> (як «Er-yan») · /ˈœːr.jan/'
+      },
       indLabel: { sv: 'Branscher', en: 'Industries', de: 'Branchen', fr: 'Secteurs', uk: 'Галузі' },
       expLabel: { sv: 'Expertis', en: 'Expertise', de: 'Expertise', fr: 'Expertise', uk: 'Експертиза' },
       eduLabel: { sv: 'Utbildning', en: 'Education', de: 'Ausbildung', fr: 'Formation', uk: 'Освіта' },
@@ -350,6 +360,7 @@
     function render() {
       document.documentElement.lang = lang
       $('tagline').textContent = UI.tagline[lang]
+      const pron = $('pron'); pron.innerHTML = UI.pron[lang]; pron.hidden = !UI.pron[lang]
       $('ind-label').textContent = UI.indLabel[lang]
       $('exp-label').textContent = UI.expLabel[lang]
       $('edu-label').textContent = UI.eduLabel[lang]
