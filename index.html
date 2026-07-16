@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Örjan Lundberg — projects</title>
+  <meta name="description" content="Örjan Lundberg — data engineer & Scala developer. Energy systems, DuckDB, and interactive data visualisation.">
+  <style>
+    :root {
+      --bg: #f7f8fb; --panel: #ffffff; --ink: #1a1f2b; --muted: #5b6472;
+      --line: #e4e8f0; --accent: #1a6b54; --accent-ink: #12503f;
+      --chip: #eef1f6; --shadow: 0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.05);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e1116; --panel: #161b23; --ink: #e8ecf3; --muted: #9aa4b2;
+        --line: #262d38; --accent: #48c79f; --accent-ink: #6fd8b6;
+        --chip: #1e2530; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 940px; margin: 0 auto; padding: 0 20px 72px; }
+    header { padding: 48px 0 8px; display: flex; flex-wrap: wrap; gap: 20px 24px; align-items: flex-start; }
+    .id { flex: 1 1 320px; min-width: 0; }
+    h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 6px; letter-spacing: -.02em; }
+    .tagline { color: var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin: 0; max-width: 42ch; }
+    .langs { display: flex; gap: 2px; flex-wrap: wrap; }
+    .langs button {
+      font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .02em;
+      padding: 5px 11px; border: 1px solid var(--line); background: var(--panel);
+      color: var(--muted); cursor: pointer;
+    }
+    .langs button:first-child { border-radius: 8px 0 0 8px; }
+    .langs button:last-child { border-radius: 0 8px 8px 0; }
+    .langs button + button { border-left: none; }
+    .langs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; z-index: 1; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted);
+         margin: 44px 0 16px; font-weight: 700; }
+    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); }
+    .card {
+      display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+      padding: 18px 18px 16px; box-shadow: var(--shadow);
+      transition: transform .14s ease, border-color .14s ease;
+    }
+    .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .card .name { font-size: 17px; font-weight: 700; letter-spacing: -.01em; display: flex;
+                  align-items: center; gap: 8px; }
+    .card .desc { color: var(--muted); font-size: 14.5px; flex: 1; }
+    .card .foot { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+    .chip { font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px;
+            background: var(--chip); color: var(--muted); letter-spacing: .01em; }
+    .chip.live { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); }
+    .go { margin-left: auto; color: var(--accent); font-weight: 600; font-size: 13.5px; }
+    .go::after { content: " →"; }
+    footer { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--line);
+             color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="id">
+        <h1>Örjan Lundberg</h1>
+        <p class="tagline" id="tagline"></p>
+      </div>
+      <div class="langs" id="langs" role="group" aria-label="Language"></div>
+    </header>
+
+    <main>
+      <h2 id="h-demos"></h2>
+      <div class="grid" id="demos"></div>
+
+      <h2 id="h-repos"></h2>
+      <div class="grid" id="repos"></div>
+    </main>
+
+    <footer>
+      <a href="https://github.com/oluies">GitHub</a>
+      <a href="https://www.linkedin.com/in/orjanlundberg/">LinkedIn</a>
+      <span id="foot-note"></span>
+    </footer>
+  </div>
+
+  <script>
+    const LANGS = ['sv', 'en', 'de', 'fr', 'uk']
+    const LABEL = { sv: 'SV', en: 'EN', de: 'DE', fr: 'FR', uk: 'UK' }
+    const UI = {
+      tagline: {
+        sv: 'Dataingenjör och Scala-utvecklare — energisystem, DuckDB och interaktiv datavisualisering.',
+        en: 'Data engineer & Scala developer — energy systems, DuckDB, and interactive data visualisation.',
+        de: 'Data Engineer & Scala-Entwickler — Energiesysteme, DuckDB und interaktive Datenvisualisierung.',
+        fr: 'Ingénieur data & développeur Scala — systèmes énergétiques, DuckDB et visualisation de données interactive.',
+        uk: 'Інженер даних і Scala-розробник — енергосистеми, DuckDB та інтерактивна візуалізація даних.'
+      },
+      demos: { sv: 'Live-demos', en: 'Live demos', de: 'Live-Demos', fr: 'Démos en ligne', uk: 'Живі демо' },
+      repos: { sv: 'Kod och projekt', en: 'Code & projects', de: 'Code & Projekte', fr: 'Code & projets', uk: 'Код і проєкти' },
+      live: { sv: 'live', en: 'live', de: 'live', fr: 'en ligne', uk: 'онлайн' },
+      open: { sv: 'Öppna', en: 'Open', de: 'Öffnen', fr: 'Ouvrir', uk: 'Відкрити' },
+      source: { sv: 'Källkod', en: 'Source', de: 'Quellcode', fr: 'Code source', uk: 'Джерело' },
+      foot: {
+        sv: '· Byggd som en statisk sida på GitHub Pages.',
+        en: '· Built as a static page on GitHub Pages.',
+        de: '· Als statische Seite auf GitHub Pages gebaut.',
+        fr: '· Page statique hébergée sur GitHub Pages.',
+        uk: '· Статична сторінка на GitHub Pages.'
+      }
+    }
+
+    const DEMOS = [
+      { name: 'elmix', url: 'https://oluies.github.io/elmix/', repo: 'https://github.com/oluies/elmix', d: {
+        sv: 'Svensk elmarknad SE1–SE4 från ENTSO-E — DuckDB-marts och Scala.js-visualisering.',
+        en: 'Swedish power market SE1–SE4 from ENTSO-E — DuckDB marts and Scala.js visualisations.',
+        de: 'Schwedischer Strommarkt SE1–SE4 aus ENTSO-E — DuckDB-Marts und Scala.js-Visualisierung.',
+        fr: 'Marché électrique suédois SE1–SE4 depuis ENTSO-E — marts DuckDB et visualisations Scala.js.',
+        uk: 'Шведський ринок електроенергії SE1–SE4 з ENTSO-E — вітрини DuckDB та візуалізації Scala.js.'
+      } },
+      { name: 'drillbanken', url: 'https://oluies.github.io/drillbanken/', repo: 'https://github.com/oluies/drillbanken', d: {
+        sv: 'Gamifierad SQL-tutor i webbläsaren — DuckDB-WASM och Scala.js.',
+        en: 'Gamified SQL tutor in the browser — DuckDB-WASM and Scala.js.',
+        de: 'Gamifizierter SQL-Tutor im Browser — DuckDB-WASM und Scala.js.',
+        fr: 'Tuteur SQL ludifié dans le navigateur — DuckDB-WASM et Scala.js.',
+        uk: 'Гейміфікований SQL-тренажер у браузері — DuckDB-WASM і Scala.js.'
+      } },
+      { name: 'sql-concepts-lab', url: 'https://oluies.github.io/sql-concepts-lab/', repo: 'https://github.com/oluies/sql-concepts-lab', d: {
+        sv: 'Interaktivt labb för att lära sig SQL-koncept.',
+        en: 'Interactive lab for learning SQL concepts.',
+        de: 'Interaktives Lab zum Erlernen von SQL-Konzepten.',
+        fr: 'Laboratoire interactif pour apprendre les concepts SQL.',
+        uk: 'Інтерактивна лабораторія для вивчення концепцій SQL.'
+      } },
+      { name: 'duckdb-fourier', url: 'https://oluies.github.io/duckdb-fourier/', repo: 'https://github.com/oluies/duckdb-fourier', d: {
+        sv: 'Fourieranalys direkt i DuckDB — signaltransformer i SQL.',
+        en: 'Fourier analysis directly in DuckDB — signal transforms in SQL.',
+        de: 'Fourier-Analyse direkt in DuckDB — Signaltransformationen in SQL.',
+        fr: 'Analyse de Fourier directement dans DuckDB — transformations de signal en SQL.',
+        uk: 'Аналіз Фур’є безпосередньо в DuckDB — перетворення сигналів у SQL.'
+      } },
+      { name: 'rtk', url: 'https://www.rtk-ai.app', repo: 'https://github.com/oluies/rtk', d: {
+        sv: 'CLI-proxy som sänker LLM-tokenåtgång 60–90 % — en Rust-binär.',
+        en: 'CLI proxy that cuts LLM token usage 60–90% — a single Rust binary.',
+        de: 'CLI-Proxy, der den LLM-Tokenverbrauch um 60–90 % senkt — eine Rust-Binärdatei.',
+        fr: 'Proxy CLI qui réduit la consommation de tokens LLM de 60 à 90 % — un seul binaire Rust.',
+        uk: 'CLI-проксі, що зменшує споживання токенів LLM на 60–90 % — один бінарник на Rust.'
+      } }
+    ]
+
+    const REPOS = [
+      { name: 'GenX-SE', repo: 'https://github.com/oluies/GenX-SE', d: {
+        sv: 'Energisystemmodell för Sveriges fyra elområden, byggd på GenX.',
+        en: "Energy-system model for Sweden's four bidding zones, built on GenX.",
+        de: 'Energiesystemmodell für Schwedens vier Gebotszonen, basierend auf GenX.',
+        fr: 'Modèle de système énergétique pour les quatre zones de prix suédoises, basé sur GenX.',
+        uk: 'Модель енергосистеми для чотирьох цінових зон Швеції на основі GenX.'
+      } },
+      { name: 'scala-hotwire', repo: 'https://github.com/oluies/scala-hotwire', d: {
+        sv: 'Hotwire (Turbo Streams) på Apache Pekko HTTP och Scala 3.',
+        en: 'Hotwire (Turbo Streams) on Apache Pekko HTTP and Scala 3.',
+        de: 'Hotwire (Turbo Streams) auf Apache Pekko HTTP und Scala 3.',
+        fr: 'Hotwire (Turbo Streams) sur Apache Pekko HTTP et Scala 3.',
+        uk: 'Hotwire (Turbo Streams) на Apache Pekko HTTP і Scala 3.'
+      } },
+      { name: 'siida', repo: 'https://github.com/oluies/siida', d: {
+        sv: 'Metadataskyddande meddelanden för människor och AI-agenter — Scala 3 och Pekko.',
+        en: 'Privacy-preserving messaging for humans and AI agents — Scala 3 and Pekko.',
+        de: 'Metadaten-schützende Nachrichten für Menschen und KI-Agenten — Scala 3 und Pekko.',
+        fr: 'Messagerie préservant la confidentialité pour humains et agents IA — Scala 3 et Pekko.',
+        uk: 'Обмін повідомленнями зі збереженням приватності для людей та AI-агентів — Scala 3 і Pekko.'
+      } },
+      { name: 'mssql-extension', repo: 'https://github.com/oluies/mssql-extension', d: {
+        sv: 'DuckDB-tillägg för Microsoft SQL Server (TDS + TLS) med pushdown.',
+        en: 'DuckDB extension for Microsoft SQL Server (TDS + TLS) with pushdown.',
+        de: 'DuckDB-Erweiterung für Microsoft SQL Server (TDS + TLS) mit Pushdown.',
+        fr: 'Extension DuckDB pour Microsoft SQL Server (TDS + TLS) avec pushdown.',
+        uk: 'Розширення DuckDB для Microsoft SQL Server (TDS + TLS) із pushdown.'
+      } },
+      { name: 'tedsds-duckdb-postgres', repo: 'https://github.com/oluies/tedsds-duckdb-postgres', d: {
+        sv: 'Prediktivt underhåll (NASA turbofan) på Postgres, DuckDB och scikit-learn.',
+        en: 'Predictive maintenance (NASA turbofan) on Postgres, DuckDB and scikit-learn.',
+        de: 'Vorausschauende Wartung (NASA-Turbofan) auf Postgres, DuckDB und scikit-learn.',
+        fr: 'Maintenance prédictive (turboréacteur NASA) sur Postgres, DuckDB et scikit-learn.',
+        uk: 'Прогнозне обслуговування (турбовентилятор NASA) на Postgres, DuckDB і scikit-learn.'
+      } },
+      { name: 'Circuit-Breaker-for-Scala', repo: 'https://github.com/oluies/Circuit-Breaker-for-Scala', d: {
+        sv: 'Circuit Breaker för Scala, baserad på boken ”Release It”.',
+        en: 'Circuit Breaker for Scala, based on the book "Release It".',
+        de: 'Circuit Breaker für Scala, basierend auf dem Buch „Release It“.',
+        fr: 'Circuit Breaker pour Scala, d’après le livre « Release It ».',
+        uk: 'Circuit Breaker для Scala, за книгою «Release It».'
+      } }
+    ]
+
+    let lang = 'en'
+    const $ = id => document.getElementById(id)
+
+    function card(item, isDemo) {
+      const a = document.createElement('a')
+      a.className = 'card'
+      a.href = isDemo ? item.url : item.repo
+      a.rel = 'noopener'
+      const name = document.createElement('div')
+      name.className = 'name'
+      name.textContent = item.name
+      const desc = document.createElement('div')
+      desc.className = 'desc'
+      desc.textContent = item.d[lang]
+      const foot = document.createElement('div')
+      foot.className = 'foot'
+      const chip = document.createElement('span')
+      if (isDemo) { chip.className = 'chip live'; chip.textContent = '● ' + UI.live[lang] }
+      else { chip.className = 'chip'; chip.textContent = 'GitHub' }
+      const go = document.createElement('span')
+      go.className = 'go'
+      go.textContent = isDemo ? UI.open[lang] : UI.source[lang]
+      foot.appendChild(chip); foot.appendChild(go)
+      a.appendChild(name); a.appendChild(desc); a.appendChild(foot)
+      return a
+    }
+
+    function render() {
+      document.documentElement.lang = lang
+      $('tagline').textContent = UI.tagline[lang]
+      $('h-demos').textContent = UI.demos[lang]
+      $('h-repos').textContent = UI.repos[lang]
+      $('foot-note').textContent = UI.foot[lang]
+      const d = $('demos'); d.innerHTML = ''
+      DEMOS.forEach(x => d.appendChild(card(x, true)))
+      const r = $('repos'); r.innerHTML = ''
+      REPOS.forEach(x => r.appendChild(card(x, false)))
+      for (const b of $('langs').children) b.setAttribute('aria-pressed', String(b.dataset.l === lang))
+    }
+
+    function setLang(l) {
+      lang = l
+      try { localStorage.setItem('lang', l) } catch (e) {}
+      render()
+    }
+
+    const ls = $('langs')
+    LANGS.forEach(l => {
+      const b = document.createElement('button')
+      b.type = 'button'; b.dataset.l = l; b.textContent = LABEL[l]
+      b.onclick = () => setLang(l)
+      ls.appendChild(b)
+    })
+
+    let stored = null
+    try { stored = localStorage.getItem('lang') } catch (e) {}
+    const nav = (navigator.language || 'en').slice(0, 2).toLowerCase()
+    lang = (stored && LANGS.includes(stored)) ? stored : (LANGS.includes(nav) ? nav : 'en')
+    render()
+  </script>
+</body>
+</html>
