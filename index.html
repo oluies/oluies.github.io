@@ -29,6 +29,9 @@
     header { padding: 48px 0 8px; display: flex; flex-wrap: wrap; gap: 20px 24px; align-items: flex-start; }
     .id { flex: 1 1 320px; min-width: 0; }
     h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 6px; letter-spacing: -.02em; }
+    .namelink { color: inherit; text-decoration: none; border-bottom: 2px dotted var(--line); }
+    .namelink:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .namelink:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
     .pron { color: var(--muted); font-size: 13.5px; margin: 4px 0 8px; font-style: italic; }
     .pron b { font-style: normal; font-weight: 600; color: var(--ink); }
     .tagline { color: var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin: 0; max-width: 42ch; }
@@ -79,12 +82,13 @@
   <div class="wrap">
     <header>
       <div class="id">
-        <h1>Örjan Lundberg</h1>
+        <h1><a class="namelink" href="https://sv.wikipedia.org/wiki/Örjan" title="Namnet Örjan på Wikipedia" rel="noopener">Örjan</a> Lundberg</h1>
         <p class="pron" id="pron" hidden></p>
         <p class="tagline" id="tagline"></p>
         <div class="meta">
           <div class="metarow"><span class="mlabel" id="ind-label"></span><span class="chips" id="industries"></span></div>
           <div class="metarow"><span class="mlabel" id="exp-label"></span><span class="chips" id="expertise"></span></div>
+          <div class="metarow"><span class="mlabel" id="prog-label"></span><span class="chips" id="programming"></span></div>
           <div class="metarow"><span class="mlabel" id="edu-label"></span><span class="edu" id="education"></span></div>
         </div>
       </div>
@@ -136,6 +140,7 @@
       },
       indLabel: { sv: 'Branscher', en: 'Industries', de: 'Branchen', fr: 'Secteurs', uk: 'Галузі' },
       expLabel: { sv: 'Expertis', en: 'Expertise', de: 'Expertise', fr: 'Expertise', uk: 'Експертиза' },
+      progLabel: { sv: 'Programmering', en: 'Programming', de: 'Programmierung', fr: 'Programmation', uk: 'Програмування' },
       eduLabel: { sv: 'Utbildning', en: 'Education', de: 'Ausbildung', fr: 'Formation', uk: 'Освіта' },
       foot: {
         sv: '· Byggd som en statisk sida på GitHub Pages.',
@@ -324,6 +329,7 @@
       { sv: 'Business intelligence', en: 'Business intelligence', de: 'Business Intelligence', fr: 'Business intelligence', uk: 'Бізнес-аналітика (BI)' },
       { sv: 'Data engineering', en: 'Data engineering', de: 'Data Engineering', fr: 'Data engineering', uk: 'Інженерія даних' }
     ]
+    const PROGRAMMING = ['Scala', 'C++', 'Java', 'Python']
     const EDU = [
       { sv: 'Kandidatexamen i systemvetenskap', en: 'BSc in Systems Analysis', de: 'B.Sc. in Systemanalyse', fr: 'Licence en analyse de systèmes', uk: 'Бакалавр із системного аналізу' },
       { sv: 'Masterexamen i mjukvaruutveckling', en: 'MSc in Software Development', de: 'M.Sc. in Softwareentwicklung', fr: 'Master en développement logiciel', uk: 'Магістр із розробки ПЗ' }
@@ -363,11 +369,13 @@
       const pron = $('pron'); pron.innerHTML = UI.pron[lang]; pron.hidden = !UI.pron[lang]
       $('ind-label').textContent = UI.indLabel[lang]
       $('exp-label').textContent = UI.expLabel[lang]
+      $('prog-label').textContent = UI.progLabel[lang]
       $('edu-label').textContent = UI.eduLabel[lang]
       const chipRow = (host, items) => { const el = $(host); el.innerHTML = ''
-        items.forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = x[lang]; el.appendChild(s) }) }
+        items.forEach(x => { const s = document.createElement('span'); s.className = 'chip'; s.textContent = (typeof x === 'string') ? x : x[lang]; el.appendChild(s) }) }
       chipRow('industries', INDUSTRIES)
       chipRow('expertise', EXPERTISE)
+      chipRow('programming', PROGRAMMING)
       $('education').textContent = EDU.map(x => x[lang]).join(' · ')
       $('h-demos').textContent = UI.demos[lang]
       $('h-repos').textContent = UI.repos[lang]
