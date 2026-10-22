@@ -208,12 +208,26 @@
         fr: 'Lignage au niveau colonne de dbt-duckdb vers OpenMetadata — événements OpenLineage et sqlglot.',
         uk: 'Лінідж на рівні колонок із dbt-duckdb до OpenMetadata — події OpenLineage і sqlglot.'
       } },
+      { name: 'om-eba-annotatedtpl', url: 'https://oluies.github.io/om-eba-annotatedtpl/', repo: 'https://github.com/oluies/om-eba-annotatedtpl', d: {
+        sv: 'EBA:s datapunktsmodell, frågad direkt i webbläsaren med DuckDB-WASM och Scala.js — betalnings- och bedrägerirapportering under PSD2 (PAY 4.2) normaliserad till OpenMetadata-dokumentation: 1 830 datapunkter och ordlista.',
+        en: 'The EBA data point model, queried in the browser with DuckDB-WASM and Scala.js — PSD2 payment and fraud reporting (PAY 4.2) normalised into OpenMetadata documentation: 1,830 datapoints and a glossary.',
+        de: 'Das Datenpunktmodell der EBA, im Browser abgefragt mit DuckDB-WASM und Scala.js — Zahlungs- und Betrugsmeldung unter PSD2 (PAY 4.2), normalisiert zu OpenMetadata-Dokumentation: 1.830 Datenpunkte und Glossar.',
+        fr: 'Le modèle de points de données de l’EBA, interrogé dans le navigateur avec DuckDB-WASM et Scala.js — déclaration des paiements et de la fraude sous DSP2 (PAY 4.2), normalisée en documentation OpenMetadata : 1 830 points de données et un glossaire.',
+        uk: 'Модель точок даних EBA, запитувана прямо в браузері через DuckDB-WASM і Scala.js — звітність про платежі та шахрайство за PSD2 (PAY 4.2), нормалізована в документацію OpenMetadata: 1830 точок даних і глосарій.'
+      } },
       { name: 'pctc', url: 'https://oluies.github.io/pctc/', repo: 'https://github.com/oluies/pctc', d: {
         sv: 'Post-selekterad sluten tidsliknande kurva, simulerad i webbläsaren — reproducerar arXiv:2509.08965 med täthetsmatriser, Scotty och Scala.js.',
         en: 'Post-selected closed timelike curve, simulated in the browser — reproduces arXiv:2509.08965 with density matrices, Scotty and Scala.js.',
         de: 'Post-selektierte geschlossene zeitartige Kurve, im Browser simuliert — reproduziert arXiv:2509.08965 mit Dichtematrizen, Scotty und Scala.js.',
         fr: 'Courbe de type temps fermée post-sélectionnée, simulée dans le navigateur — reproduit arXiv:2509.08965 avec des matrices densité, Scotty et Scala.js.',
         uk: 'Пост-селектована замкнена часоподібна крива, змодельована у браузері — відтворює arXiv:2509.08965 на матрицях щільності, Scotty і Scala.js.'
+      } },
+      { name: 'brokkr', url: 'https://oluies.github.io/brokkr/', repo: 'https://github.com/oluies/brokkr', d: {
+        sv: 'Går det att snabba upp kvantsimulering med en CUTE-liknande tensormotor i Chisel? Designutredning med RTL, verifierad mot Scotty under Verilator.',
+        en: 'Can a CUTE-style Chisel tensor engine accelerate quantum simulation? A design assessment with the RTL to go with it, verified against Scotty under Verilator.',
+        de: 'Kann eine CUTE-artige Tensor-Engine in Chisel die Quantensimulation beschleunigen? Eine Designuntersuchung samt RTL, gegen Scotty unter Verilator verifiziert.',
+        fr: 'Un moteur tensoriel en Chisel de type CUTE peut-il accélérer la simulation quantique ? Une étude de conception et le RTL qui va avec, vérifié face à Scotty sous Verilator.',
+        uk: 'Чи може тензорний рушій на Chisel у стилі CUTE прискорити квантове моделювання? Проєктне дослідження з RTL, перевіреним проти Scotty під Verilator.'
       } },
       { name: 'noaidi', url: 'https://oluies.github.io/noaidi/', repo: 'https://github.com/oluies/noaidi', d: {
         sv: 'PyPSA på JVM:en — LP-lösaren Prima i webbläsaren, med linjär optimal lastflödesberäkning i Scala 3 och ZIO.',
@@ -254,11 +268,11 @@
 
     const REPOS = [
       { name: 'scotty', repo: 'https://github.com/oluies/scotty', d: {
-        sv: 'Kvantberäkning i Scala — fork där grenen pctc portar Scotty till Scala 3.9 LTS och lägger till täthetsmatriser och kvantkanaler.',
-        en: 'Quantum computing in Scala — a fork whose pctc branch ports Scotty to Scala 3.9 LTS and adds a density-matrix and quantum-channel layer.',
-        de: 'Quantencomputing in Scala — ein Fork, dessen pctc-Branch Scotty auf Scala 3.9 LTS portiert und eine Dichtematrix- und Quantenkanal-Schicht ergänzt.',
-        fr: 'Calcul quantique en Scala — un fork dont la branche pctc porte Scotty vers Scala 3.9 LTS et ajoute une couche matrices densité et canaux quantiques.',
-        uk: 'Квантові обчислення на Scala — форк, у якому гілка pctc переносить Scotty на Scala 3.9 LTS і додає шар матриць щільності та квантових каналів.'
+        sv: 'Kvantberäkning i Scala — fork där grenen pctc portar Scotty till Scala 3.9 LTS och lägger till täthetsmatriser, kvantkanaler och grindfusion. Referensmodell för både pctc och brokkr.',
+        en: 'Quantum computing in Scala — a fork whose pctc branch ports Scotty to Scala 3.9 LTS and adds density matrices, quantum channels and gate fusion. The golden model for both pctc and brokkr.',
+        de: 'Quantencomputing in Scala — ein Fork, dessen pctc-Branch Scotty auf Scala 3.9 LTS portiert und Dichtematrizen, Quantenkanäle und Gate-Fusion ergänzt. Referenzmodell für pctc und brokkr.',
+        fr: 'Calcul quantique en Scala — un fork dont la branche pctc porte Scotty vers Scala 3.9 LTS et ajoute matrices densité, canaux quantiques et fusion de portes. Modèle de référence pour pctc et brokkr.',
+        uk: 'Квантові обчислення на Scala — форк, у якому гілка pctc переносить Scotty на Scala 3.9 LTS і додає матриці щільності, квантові канали та злиття вентилів. Еталонна модель для pctc і brokkr.'
       } },
       { name: 'kolla', repo: 'https://github.com/oluies/kolla', d: {
         sv: 'Typkontrollant för Lean 4:s kärna, skriven i Scala 3 — korsbyggd för JVM, Scala.js och Scala Native.',
@@ -273,13 +287,6 @@
         de: 'Quantitativer Vergleich von Raumfahrtantrieben für einen bemannten Mars-Transfer und eine 500-kg-Tiefraumsonde — Julia-Modelle, Scala/Mill-Pipeline, Lean-4-Beweise und DuckDB.',
         fr: 'Comparaison quantitative de propulsions spatiales pour un transfert habité vers Mars et une sonde interplanétaire de 500 kg — modèles Julia, pipeline Scala/Mill, preuves Lean 4 et DuckDB.',
         uk: 'Кількісне порівняння космічних рухових систем для пілотованого перельоту до Марса та зонда масою 500 кг — моделі на Julia, конвеєр Scala/Mill, доведення в Lean 4 і DuckDB.'
-      } },
-      { name: 'om-eba-annotatedtpl', repo: 'https://github.com/oluies/om-eba-annotatedtpl', d: {
-        sv: 'EBA PAY 4.2 — betalnings- och bedrägerirapportering under PSD2 — normaliserad till OpenMetadata-dokumentation: 1 830 datapunkter, ordlista och importör för Knowledge Pages.',
-        en: 'EBA PAY 4.2 — payment and fraud reporting under PSD2 — normalised into OpenMetadata documentation: 1,830 datapoints, a glossary and a Knowledge Pages importer.',
-        de: 'EBA PAY 4.2 — Zahlungs- und Betrugsmeldung unter PSD2 — normalisiert zu OpenMetadata-Dokumentation: 1.830 Datenpunkte, Glossar und ein Knowledge-Pages-Importer.',
-        fr: 'EBA PAY 4.2 — déclaration des paiements et de la fraude sous DSP2 — normalisée en documentation OpenMetadata : 1 830 points de données, un glossaire et un importateur Knowledge Pages.',
-        uk: 'EBA PAY 4.2 — звітність про платежі та шахрайство за PSD2 — нормалізована в документацію OpenMetadata: 1830 точок даних, глосарій та імпортер Knowledge Pages.'
       } },
       { name: 'p4rt-examples', repo: 'https://github.com/oluies/p4rt-examples', d: {
         sv: 'Körbar demo där P4R-Type styr ett P4-program från tredje part — installera pipeline, lägg in tabellpost och läs tillbaka, allt typkontrollerat vid kompilering.',
