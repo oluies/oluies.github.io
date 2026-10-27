@@ -21,13 +21,13 @@
     :root {
       --bg: #f7f8fb; --panel: #ffffff; --ink: #1a1f2b; --muted: #5b6472;
       --line: #e4e8f0; --accent: #1a6b54; --accent-ink: #12503f;
-      --chip: #eef1f6; --line-strong: #858e9c; --shadow: 0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.05);
+      --chip: #eef1f6; --line-strong: #858e9c; --on-accent: #ffffff; --shadow: 0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.05);
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0e1116; --panel: #161b23; --ink: #e8ecf3; --muted: #9aa4b2;
         --line: #262d38; --accent: #48c79f; --accent-ink: #6fd8b6;
-        --chip: #1e2530; --line-strong: #626c7c; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+        --chip: #1e2530; --line-strong: #626c7c; --on-accent: #0e1116; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
       }
     }
     * { box-sizing: border-box; }
@@ -62,7 +62,8 @@
     .langs button:first-child { border-radius: 8px 0 0 8px; }
     .langs button:last-child { border-radius: 0 8px 8px 0; }
     .langs button + button { border-left: none; }
-    .langs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .langs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent);
+                                        color: var(--on-accent); }
     .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; z-index: 1; }
     h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted);
          margin: 44px 0 16px; font-weight: 700; }
