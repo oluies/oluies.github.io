@@ -22,13 +22,21 @@
       --bg: #f7f8fb; --panel: #ffffff; --ink: #1a1f2b; --muted: #5b6472;
       --line: #e4e8f0; --accent: #1a6b54; --accent-ink: #12503f;
       --chip: #eef1f6; --line-strong: #858e9c; --on-accent: #ffffff; --shadow: 0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.05);
+      color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
         --bg: #0e1116; --panel: #161b23; --ink: #e8ecf3; --muted: #9aa4b2;
         --line: #262d38; --accent: #48c79f; --accent-ink: #6fd8b6;
         --chip: #1e2530; --line-strong: #626c7c; --on-accent: #0e1116; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+        color-scheme: dark;
       }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0e1116; --panel: #161b23; --ink: #e8ecf3; --muted: #9aa4b2;
+      --line: #262d38; --accent: #48c79f; --accent-ink: #6fd8b6;
+      --chip: #1e2530; --line-strong: #626c7c; --on-accent: #0e1116; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+      color-scheme: dark;
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
@@ -53,18 +61,19 @@
               font-weight: 700; flex: 0 0 78px; }
     .chips { display: inline-flex; gap: 6px; flex-wrap: wrap; }
     .edu { color: var(--ink); font-size: 14.5px; }
-    .langs { display: flex; gap: 2px; flex-wrap: wrap; }
-    .langs button {
+    .switches { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+    .langs, .themes { display: flex; gap: 2px; flex-wrap: wrap; }
+    .langs button, .themes button {
       font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .02em;
       padding: 5px 11px; border: 1px solid var(--line-strong); background: var(--panel);
       color: var(--muted); cursor: pointer;
     }
-    .langs button:first-child { border-radius: 8px 0 0 8px; }
-    .langs button:last-child { border-radius: 0 8px 8px 0; }
-    .langs button + button { border-left: none; }
-    .langs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent);
+    .langs button:first-child, .themes button:first-child { border-radius: 8px 0 0 8px; }
+    .langs button:last-child, .themes button:last-child { border-radius: 0 8px 8px 0; }
+    .langs button + button, .themes button + button { border-left: none; }
+    .langs button[aria-pressed="true"], .themes button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent);
                                         color: var(--on-accent); }
-    .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; z-index: 1; }
+    .langs button:focus-visible, .themes button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; z-index: 1; }
     h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted);
          margin: 44px 0 16px; font-weight: 700; }
     .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(268px, 100%), 1fr));
@@ -116,7 +125,8 @@
        restate the tokens itself. */
     @page { margin: 15mm; }
     @media print {
-      :root, :root:not([data-theme]) {
+      :root, :root[data-theme] {
+        color-scheme: light;
         --bg: #ffffff; --panel: #ffffff; --ink: #000000; --muted: #333333;
         --line: #999999; --line-strong: #666666;
         --accent: #000000; --accent-ink: #000000; --chip: #ffffff; --shadow: none;
@@ -124,7 +134,7 @@
       body { background: #fff; color: #000; }
       .wrap { max-width: none; padding: 0; }
       header { padding-top: 0; }
-      .langs { display: none; }
+      .langs, .themes { display: none; }
       h2 { margin-top: 24px; break-after: avoid; page-break-after: avoid; }
       .grid { gap: 10px; grid-template-columns: repeat(2, 1fr); }
       .grid > li, .card { break-inside: avoid; page-break-inside: avoid; }
@@ -146,6 +156,12 @@
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
   </style>
+  <script>
+    try {
+      var t = localStorage.getItem('theme')
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+    } catch (e) {}
+  </script>
 </head>
 <body>
   <div class="wrap">
@@ -161,7 +177,10 @@
           <div class="metarow"><span class="mlabel" id="edu-label"></span><span class="edu" id="education"></span></div>
         </div>
       </div>
-      <div class="langs" id="langs" role="group" aria-label="Language"></div>
+      <div class="switches">
+        <div class="langs" id="langs" role="group" aria-label="Language"></div>
+        <div class="themes" id="themes" role="group" aria-label="Appearance"></div>
+      </div>
     </header>
 
     <main>
@@ -207,6 +226,10 @@
       source: { sv: 'Källkod', en: 'Source', de: 'Quellcode', fr: 'Code source', uk: 'Джерело' },
       viewprs: { sv: 'Visa PR:er', en: 'View PRs', de: 'PRs ansehen', fr: 'Voir les PR', uk: 'Переглянути PR' },
       langLabel: { sv: 'Språk', en: 'Language', de: 'Sprache', fr: 'Langue', uk: 'Мова' },
+      themeLabel: { sv: 'Utseende', en: 'Appearance', de: 'Darstellung', fr: 'Apparence', uk: 'Вигляд' },
+      themeLight: { sv: 'Ljust', en: 'Light', de: 'Hell', fr: 'Clair', uk: 'Світла' },
+      themeDark:  { sv: 'Mörkt', en: 'Dark', de: 'Dunkel', fr: 'Sombre', uk: 'Темна' },
+      themeAuto:  { sv: 'Auto', en: 'Auto', de: 'Auto', fr: 'Auto', uk: 'Авто' },
       nameTitle: {
         sv: 'Namnet Örjan på Wikipedia',
         en: 'The name Örjan on Swedish Wikipedia',
@@ -559,7 +582,22 @@
     ]
 
     let lang = 'en'
+    const THEMES = ['light', 'dark', 'auto']
+    let theme = 'auto'
     const $ = id => document.getElementById(id)
+
+    // 'auto' means: remove the attribute and let the media query decide.
+    function applyTheme() {
+      if (theme === 'auto') delete document.documentElement.dataset.theme
+      else document.documentElement.dataset.theme = theme
+      for (const b of $('themes').children) b.setAttribute('aria-pressed', String(b.dataset.t === theme))
+    }
+
+    function setTheme(t) {
+      theme = t
+      try { t === 'auto' ? localStorage.removeItem('theme') : localStorage.setItem('theme', t) } catch (e) {}
+      applyTheme()
+    }
 
     function card(item, kind) {
       const li = document.createElement('li')
@@ -620,6 +658,9 @@
       $('foot-note').textContent = UI.foot[lang]
       $('namelink').title = UI.nameTitle[lang]
       $('langs').setAttribute('aria-label', UI.langLabel[lang])
+      $('themes').setAttribute('aria-label', UI.themeLabel[lang])
+      const tLabel = { light: UI.themeLight, dark: UI.themeDark, auto: UI.themeAuto }
+      for (const b of $('themes').children) b.textContent = tLabel[b.dataset.t][lang]
       const d = $('demos'); d.innerHTML = ''
       DEMOS.forEach(x => d.appendChild(card(x, 'demo')))
       const r = $('repos'); r.innerHTML = ''
@@ -643,11 +684,24 @@
       ls.appendChild(b)
     })
 
+    const ts = $('themes')
+    THEMES.forEach(t => {
+      const b = document.createElement('button')
+      b.type = 'button'; b.dataset.t = t
+      b.onclick = () => setTheme(t)
+      ts.appendChild(b)
+    })
+
+    let storedTheme = null
+    try { storedTheme = localStorage.getItem('theme') } catch (e) {}
+    theme = (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'auto'
+
     let stored = null
     try { stored = localStorage.getItem('lang') } catch (e) {}
     const nav = (navigator.language || 'en').slice(0, 2).toLowerCase()
     lang = (stored && LANGS.includes(stored)) ? stored : (LANGS.includes(nav) ? nav : 'en')
     render()
+    applyTheme()
   </script>
 </body>
 </html>
