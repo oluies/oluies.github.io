@@ -5,17 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Örjan Lundberg — projects</title>
   <meta name="description" content="Örjan Lundberg — data engineer & Scala developer. Energy systems, DuckDB, and interactive data visualisation.">
+  <link rel="canonical" href="https://oluies.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://oluies.github.io/">
+  <meta property="og:site_name" content="Örjan Lundberg">
+  <meta property="og:title" content="Örjan Lundberg — projects">
+  <meta property="og:description" content="Software architect & data engineer — Scala, energy systems, DuckDB, and interactive data visualisation. Live demos, code and open-source contributions.">
+  <meta property="og:image" content="https://oluies.github.io/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Örjan Lundberg — software architect and data engineer. Scala, energy systems, DuckDB, data visualisation.">
+  <meta name="twitter:card" content="summary_large_image">
   <style>
     :root {
       --bg: #f7f8fb; --panel: #ffffff; --ink: #1a1f2b; --muted: #5b6472;
       --line: #e4e8f0; --accent: #1a6b54; --accent-ink: #12503f;
-      --chip: #eef1f6; --shadow: 0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.05);
+      --chip: #eef1f6; --line-strong: #858e9c; --shadow: 0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.05);
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0e1116; --panel: #161b23; --ink: #e8ecf3; --muted: #9aa4b2;
         --line: #262d38; --accent: #48c79f; --accent-ink: #6fd8b6;
-        --chip: #1e2530; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+        --chip: #1e2530; --line-strong: #626c7c; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
       }
     }
     * { box-sizing: border-box; }
@@ -36,7 +48,7 @@
     .pron b { font-style: normal; font-weight: 600; color: var(--ink); }
     .tagline { color: var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin: 0; max-width: 42ch; }
     .meta { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
-    .metarow { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+    .metarow { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; min-width: 0; }
     .mlabel { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
               font-weight: 700; flex: 0 0 78px; }
     .chips { display: inline-flex; gap: 6px; flex-wrap: wrap; }
@@ -44,7 +56,7 @@
     .langs { display: flex; gap: 2px; flex-wrap: wrap; }
     .langs button {
       font: inherit; font-size: 13px; font-weight: 600; letter-spacing: .02em;
-      padding: 5px 11px; border: 1px solid var(--line); background: var(--panel);
+      padding: 5px 11px; border: 1px solid var(--line-strong); background: var(--panel);
       color: var(--muted); cursor: pointer;
     }
     .langs button:first-child { border-radius: 8px 0 0 8px; }
@@ -54,24 +66,49 @@
     .langs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; z-index: 1; }
     h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted);
          margin: 44px 0 16px; font-weight: 700; }
-    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); }
+    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(268px, 100%), 1fr));
+            list-style: none; margin: 0; padding: 0; }
+    .grid > li { display: flex; min-width: 0; }
+    .grid > li > .card { flex: 1 1 auto; }
     .card {
-      display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit;
+      position: relative; min-width: 0;
+      display: flex; flex-direction: column; gap: 8px; color: inherit;
       background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
       padding: 18px 18px 16px; box-shadow: var(--shadow);
       transition: transform .14s ease, border-color .14s ease;
     }
     .card:hover { transform: translateY(-2px); border-color: var(--accent); }
-    .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .card .name { font-size: 17px; font-weight: 700; letter-spacing: -.01em; display: flex;
-                  align-items: center; gap: 8px; }
+                  align-items: center; gap: 8px; min-width: 0; }
+    .card .name a { color: inherit; text-decoration: none; min-width: 0; overflow-wrap: break-word; }
+    /* The title link covers the whole card, so the card stays one click target.
+       .src opts back out of it with a stacking context of its own. */
+    .card .name a::after { content: ""; position: absolute; inset: 0; border-radius: 14px; }
+    .card:has(.name a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @supports not selector(:has(*)) {
+      .card .name a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    }
     .card .desc { color: var(--muted); font-size: 14.5px; flex: 1; }
     .card .foot { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
     .chip { font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px;
             background: var(--chip); color: var(--muted); letter-spacing: .01em; }
     .chip.live { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); }
+    .chip.live::before { content: ""; display: inline-block; width: 6px; height: 6px;
+                         border-radius: 50%; background: currentColor; margin-right: 6px;
+                         vertical-align: baseline; }
+    .src { position: relative; z-index: 1; color: var(--muted); font-size: 13px; font-weight: 600;
+           text-decoration: none; border-bottom: 1px dotted var(--line); }
+    .src:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .src:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
     .go { margin-left: auto; color: var(--accent); font-weight: 600; font-size: 13.5px; }
     .go::after { content: " →"; }
+    .noscript { margin: 32px 0; padding: 16px 18px; background: var(--panel);
+                border: 1px solid var(--line); border-radius: 14px; color: var(--muted); font-size: 15px; }
+    .noscript a { color: var(--accent); }
+    @media (prefers-reduced-motion: reduce) {
+      .card { transition: none; }
+      .card:hover { transform: none; }
+    }
     footer { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--line);
              color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
     footer a { color: var(--accent); text-decoration: none; }
@@ -82,7 +119,7 @@
   <div class="wrap">
     <header>
       <div class="id">
-        <h1><a class="namelink" href="https://sv.wikipedia.org/wiki/Örjan" title="Namnet Örjan på Wikipedia" rel="noopener">Örjan</a> Lundberg</h1>
+        <h1><a class="namelink" id="namelink" href="https://sv.wikipedia.org/wiki/Örjan">Örjan</a> Lundberg</h1>
         <p class="pron" id="pron" hidden></p>
         <p class="tagline" id="tagline"></p>
         <div class="meta">
@@ -96,14 +133,20 @@
     </header>
 
     <main>
+      <noscript>
+        <p class="noscript">This page renders its project list with JavaScript, which is turned off.
+          The same projects are on <a href="https://github.com/oluies">github.com/oluies</a>, and the
+          live ones are linked from each repository.</p>
+      </noscript>
+
       <h2 id="h-demos"></h2>
-      <div class="grid" id="demos"></div>
+      <ul class="grid" id="demos" role="list"></ul>
 
       <h2 id="h-repos"></h2>
-      <div class="grid" id="repos"></div>
+      <ul class="grid" id="repos" role="list"></ul>
 
       <h2 id="h-contrib"></h2>
-      <div class="grid" id="contribs"></div>
+      <ul class="grid" id="contribs" role="list"></ul>
     </main>
 
     <footer>
@@ -131,6 +174,14 @@
       open: { sv: 'Öppna', en: 'Open', de: 'Öffnen', fr: 'Ouvrir', uk: 'Відкрити' },
       source: { sv: 'Källkod', en: 'Source', de: 'Quellcode', fr: 'Code source', uk: 'Джерело' },
       viewprs: { sv: 'Visa PR:er', en: 'View PRs', de: 'PRs ansehen', fr: 'Voir les PR', uk: 'Переглянути PR' },
+      langLabel: { sv: 'Språk', en: 'Language', de: 'Sprache', fr: 'Langue', uk: 'Мова' },
+      nameTitle: {
+        sv: 'Namnet Örjan på Wikipedia',
+        en: 'The name Örjan on Swedish Wikipedia',
+        de: 'Der Name Örjan in der schwedischen Wikipedia',
+        fr: 'Le prénom Örjan sur Wikipédia en suédois',
+        uk: 'Ім’я Örjan у шведській Вікіпедії'
+      },
       pron: {
         sv: '',
         en: 'Örjan is pronounced <b>“UR-yan”</b> (ö as in “bird”, j as “y”) · /ˈœːr.jan/',
@@ -201,19 +252,19 @@
         fr: 'Analyse de Fourier directement dans DuckDB — transformations de signal en SQL.',
         uk: 'Аналіз Фур’є безпосередньо в DuckDB — перетворення сигналів у SQL.'
       } },
-      { name: 'duckdb-openmetadata-lineage', url: 'https://oluies.github.io/duckdb-openmetadata-lineage/', repo: 'https://github.com/oluies/duckdb-openmetadata-lineage', d: {
+      { name: 'duckdb-openmetadata-lineage', title: 'Column-level lineage', url: 'https://oluies.github.io/duckdb-openmetadata-lineage/', repo: 'https://github.com/oluies/duckdb-openmetadata-lineage', d: {
         sv: 'Kolumnlineage från dbt-duckdb till OpenMetadata — OpenLineage-events och sqlglot.',
         en: 'Column-level lineage from dbt-duckdb to OpenMetadata — OpenLineage events and sqlglot.',
         de: 'Spaltenbezogene Lineage von dbt-duckdb nach OpenMetadata — OpenLineage-Events und sqlglot.',
         fr: 'Lignage au niveau colonne de dbt-duckdb vers OpenMetadata — événements OpenLineage et sqlglot.',
         uk: 'Лінідж на рівні колонок із dbt-duckdb до OpenMetadata — події OpenLineage і sqlglot.'
       } },
-      { name: 'om-eba-annotatedtpl', url: 'https://oluies.github.io/om-eba-annotatedtpl/', repo: 'https://github.com/oluies/om-eba-annotatedtpl', d: {
-        sv: 'EBA:s datapunktsmodell, frågad direkt i webbläsaren med DuckDB-WASM och Scala.js — betalnings- och bedrägerirapportering under PSD2 (PAY 4.2) normaliserad till OpenMetadata-dokumentation: 1 830 datapunkter och ordlista.',
-        en: 'The EBA data point model, queried in the browser with DuckDB-WASM and Scala.js — PSD2 payment and fraud reporting (PAY 4.2) normalised into OpenMetadata documentation: 1,830 datapoints and a glossary.',
-        de: 'Das Datenpunktmodell der EBA, im Browser abgefragt mit DuckDB-WASM und Scala.js — Zahlungs- und Betrugsmeldung unter PSD2 (PAY 4.2), normalisiert zu OpenMetadata-Dokumentation: 1.830 Datenpunkte und Glossar.',
-        fr: 'Le modèle de points de données de l’EBA, interrogé dans le navigateur avec DuckDB-WASM et Scala.js — déclaration des paiements et de la fraude sous DSP2 (PAY 4.2), normalisée en documentation OpenMetadata : 1 830 points de données et un glossaire.',
-        uk: 'Модель точок даних EBA, запитувана прямо в браузері через DuckDB-WASM і Scala.js — звітність про платежі та шахрайство за PSD2 (PAY 4.2), нормалізована в документацію OpenMetadata: 1830 точок даних і глосарій.'
+      { name: 'om-eba-annotatedtpl', title: 'DPM in the browser', url: 'https://oluies.github.io/om-eba-annotatedtpl/', repo: 'https://github.com/oluies/om-eba-annotatedtpl', d: {
+        sv: 'EBA:s datapunktsmodell frågad i webbläsaren med DuckDB-WASM — betalningsrapportering under PSD2, 1 830 datapunkter och ordlista.',
+        en: 'The EBA data point model queried in the browser with DuckDB-WASM — PSD2 payment reporting, 1,830 datapoints and a glossary.',
+        de: 'Das EBA-Datenpunktmodell im Browser abgefragt mit DuckDB-WASM — PSD2-Zahlungsmeldung, 1.830 Datenpunkte und Glossar.',
+        fr: 'Le modèle de points de données de l’EBA interrogé dans le navigateur avec DuckDB-WASM — déclaration des paiements DSP2, 1 830 points de données et un glossaire.',
+        uk: 'Модель точок даних EBA у браузері через DuckDB-WASM — звітність про платежі за PSD2, 1830 точок даних і глосарій.'
       } },
       { name: 'pctc', url: 'https://oluies.github.io/pctc/', repo: 'https://github.com/oluies/pctc', d: {
         sv: 'Post-selekterad sluten tidsliknande kurva, simulerad i webbläsaren — reproducerar arXiv:2509.08965 med täthetsmatriser, Scotty och Scala.js.',
@@ -223,11 +274,11 @@
         uk: 'Пост-селектована замкнена часоподібна крива, змодельована у браузері — відтворює arXiv:2509.08965 на матрицях щільності, Scotty і Scala.js.'
       } },
       { name: 'brokkr', url: 'https://oluies.github.io/brokkr/', repo: 'https://github.com/oluies/brokkr', d: {
-        sv: 'Går det att snabba upp kvantsimulering med en CUTE-liknande tensormotor i Chisel? Designutredning med RTL, verifierad mot Scotty under Verilator.',
-        en: 'Can a CUTE-style Chisel tensor engine accelerate quantum simulation? A design assessment with the RTL to go with it, verified against Scotty under Verilator.',
-        de: 'Kann eine CUTE-artige Tensor-Engine in Chisel die Quantensimulation beschleunigen? Eine Designuntersuchung samt RTL, gegen Scotty unter Verilator verifiziert.',
-        fr: 'Un moteur tensoriel en Chisel de type CUTE peut-il accélérer la simulation quantique ? Une étude de conception et le RTL qui va avec, vérifié face à Scotty sous Verilator.',
-        uk: 'Чи може тензорний рушій на Chisel у стилі CUTE прискорити квантове моделювання? Проєктне дослідження з RTL, перевіреним проти Scotty під Verilator.'
+        sv: 'Kan en CUTE-liknande tensormotor i Chisel snabba upp kvantsimulering? En designutredning, med tillhörande RTL.',
+        en: 'Can a CUTE-style Chisel tensor engine accelerate quantum simulation? A design assessment, with the RTL to go with it.',
+        de: 'Kann eine CUTE-artige Tensor-Engine in Chisel die Quantensimulation beschleunigen? Eine Designuntersuchung samt RTL.',
+        fr: 'Un moteur tensoriel Chisel de type CUTE peut-il accélérer la simulation quantique ? Une étude de conception, avec son RTL.',
+        uk: 'Чи може тензорний рушій на Chisel у стилі CUTE прискорити квантове моделювання? Проєктне дослідження з відповідним RTL.'
       } },
       { name: 'noaidi', url: 'https://oluies.github.io/noaidi/', repo: 'https://github.com/oluies/noaidi', d: {
         sv: 'PyPSA på JVM:en — LP-lösaren Prima i webbläsaren, med linjär optimal lastflödesberäkning i Scala 3 och ZIO.',
@@ -479,28 +530,42 @@
     const $ = id => document.getElementById(id)
 
     function card(item, kind) {
-      const a = document.createElement('a')
-      a.className = 'card'
-      a.href = kind === 'repo' ? item.repo : item.url
-      a.rel = 'noopener'
+      const li = document.createElement('li')
+      const el = document.createElement('div')
+      el.className = 'card'
       const name = document.createElement('div')
       name.className = 'name'
-      name.textContent = item.name
+      // The title is the card's link; its ::after stretches over the whole card.
+      const title = document.createElement('a')
+      title.href = kind === 'repo' ? item.repo : item.url
+      title.textContent = item.title || item.name
+      name.appendChild(title)
       const desc = document.createElement('div')
       desc.className = 'desc'
       desc.textContent = item.d[lang]
       const foot = document.createElement('div')
       foot.className = 'foot'
       const chip = document.createElement('span')
-      if (kind === 'demo') { chip.className = 'chip live'; chip.textContent = '● ' + UI.live[lang] }
+      if (kind === 'demo') { chip.className = 'chip live'; chip.textContent = UI.live[lang] }
       else if (kind === 'contrib') { chip.className = 'chip'; chip.textContent = 'PRs' }
       else { chip.className = 'chip'; chip.textContent = 'GitHub' }
+      foot.appendChild(chip)
+      // A demo links to its own source; on the other kinds the title already does.
+      if (kind === 'demo' && item.repo) {
+        const src = document.createElement('a')
+        src.className = 'src'
+        src.href = item.repo
+        src.textContent = UI.source[lang]
+        src.setAttribute('aria-label', UI.source[lang] + ' — ' + (item.title || item.name))
+        foot.appendChild(src)
+      }
       const go = document.createElement('span')
       go.className = 'go'
       go.textContent = kind === 'demo' ? UI.open[lang] : kind === 'contrib' ? UI.viewprs[lang] : UI.source[lang]
-      foot.appendChild(chip); foot.appendChild(go)
-      a.appendChild(name); a.appendChild(desc); a.appendChild(foot)
-      return a
+      foot.appendChild(go)
+      el.appendChild(name); el.appendChild(desc); el.appendChild(foot)
+      li.appendChild(el)
+      return li
     }
 
     function render() {
@@ -521,6 +586,8 @@
       $('h-repos').textContent = UI.repos[lang]
       $('h-contrib').textContent = UI.contrib[lang]
       $('foot-note').textContent = UI.foot[lang]
+      $('namelink').title = UI.nameTitle[lang]
+      $('langs').setAttribute('aria-label', UI.langLabel[lang])
       const d = $('demos'); d.innerHTML = ''
       DEMOS.forEach(x => d.appendChild(card(x, 'demo')))
       const r = $('repos'); r.innerHTML = ''
