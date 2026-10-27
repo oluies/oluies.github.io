@@ -109,6 +109,37 @@
       .card { transition: none; }
       .card:hover { transform: none; }
     }
+
+    /* Paper is white whatever the screen was, and print does not follow
+       prefers-color-scheme — so this has to come after the dark block and
+       restate the tokens itself. */
+    @page { margin: 15mm; }
+    @media print {
+      :root, :root:not([data-theme]) {
+        --bg: #ffffff; --panel: #ffffff; --ink: #000000; --muted: #333333;
+        --line: #999999; --line-strong: #666666;
+        --accent: #000000; --accent-ink: #000000; --chip: #ffffff; --shadow: none;
+      }
+      body { background: #fff; color: #000; }
+      .wrap { max-width: none; padding: 0; }
+      header { padding-top: 0; }
+      .langs { display: none; }
+      h2 { margin-top: 24px; break-after: avoid; page-break-after: avoid; }
+      .grid { gap: 10px; grid-template-columns: repeat(2, 1fr); }
+      .grid > li, .card { break-inside: avoid; page-break-inside: avoid; }
+      .card { box-shadow: none; }
+      /* Backgrounds are routinely dropped by printers, so give the chips an edge. */
+      .chip { border: 1px solid #999; background: none; }
+      .chip.live::before { display: none; }
+      /* "Open →" is an invitation to click, which paper cannot offer. */
+      .go { display: none; }
+      /* A link on paper has to carry its own address. */
+      .card .name a::after, .src::after, footer a::after {
+        content: " (" attr(href) ")";
+        position: static; font-size: 10px; font-weight: 400;
+        color: #333; word-break: break-all;
+      }
+    }
     footer { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--line);
              color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
     footer a { color: var(--accent); text-decoration: none; }
