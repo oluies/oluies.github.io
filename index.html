@@ -146,9 +146,9 @@
       .go { display: none; }
       /* A link on paper has to carry its own address. */
       .card .name a::after, .src::after, footer a::after {
-        content: " (" attr(href) ")";
+        content: " (" attr(data-print) ")";
         position: static; font-size: 10px; font-weight: 400;
-        color: #333; word-break: break-all;
+        color: #333; overflow-wrap: anywhere;
       }
     }
     footer { margin-top: 52px; padding-top: 20px; border-top: 1px solid var(--line);
@@ -201,8 +201,8 @@
     </main>
 
     <footer>
-      <a href="https://github.com/oluies">GitHub</a>
-      <a href="https://www.linkedin.com/in/orjanlundberg/">LinkedIn</a>
+      <a href="https://github.com/oluies" data-print="github.com/oluies">GitHub</a>
+      <a href="https://www.linkedin.com/in/orjanlundberg/" data-print="linkedin.com/in/orjanlundberg">LinkedIn</a>
       <span id="foot-note"></span>
     </footer>
   </div>
@@ -582,6 +582,12 @@
     ]
 
     let lang = 'en'
+    // What a reader would type: no scheme, no trailing slash.
+    // %3A reads as nothing on paper; the decoded form is shorter and types the same.
+    const printUrl = u => {
+      const bare = u.replace(/^https?:\/\//, '').replace(/\/$/, '')
+      try { return decodeURIComponent(bare) } catch (e) { return bare }
+    }
     const THEMES = ['light', 'dark', 'auto']
     let theme = 'auto'
     const $ = id => document.getElementById(id)
@@ -608,6 +614,7 @@
       // The title is the card's link; its ::after stretches over the whole card.
       const title = document.createElement('a')
       title.href = kind === 'repo' ? item.repo : item.url
+      title.dataset.print = printUrl(title.href)
       title.textContent = item.title || item.name
       name.appendChild(title)
       const desc = document.createElement('div')
@@ -625,6 +632,7 @@
         const src = document.createElement('a')
         src.className = 'src'
         src.href = item.repo
+        src.dataset.print = printUrl(src.href)
         src.textContent = UI.source[lang]
         src.setAttribute('aria-label', UI.source[lang] + ' — ' + (item.title || item.name))
         foot.appendChild(src)
